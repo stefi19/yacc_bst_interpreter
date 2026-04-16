@@ -13,4 +13,4 @@ count { return COUNT; }
 insert { return INSERT; }
 Lf { return LF; }
 [ \t] { /* ignore whitespace */ }
-. yyerror("Unknown character");
+. { fprintf(stderr, "Error: Unknown character: %s\n", yytext); }

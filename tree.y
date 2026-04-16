@@ -11,6 +11,7 @@ node *createNode(int key, node *left, node *right);
 node *insertNode(int key, node *root);
 int countNodes(node *root);
 void printTree(node *root);
+void prettyPrintTree(node *root, int depth);
 int yylex(void);
 void yyerror(const char *s){ fprintf(stderr,"Error: %s\n",s); }
 %}
@@ -21,7 +22,7 @@ void yyerror(const char *s){ fprintf(stderr,"Error: %s\n",s); }
 }
 
 %token <ival> NUMBER
-%token NODE COUNT INSERT LF
+%token NODE COUNT INSERT LF PRETTY
 
 %type <ival> i_expr
 %type <btree> t_expr tree
@@ -32,7 +33,7 @@ file: file expr '\n'
     |
     ;
 expr: i_expr {printf("%d\n",$1);}
-    | t_expr {printTree($1);}
+    | t_expr {printTree($1); printf("\n");}
     ;
 i_expr: COUNT t_expr {$$ = countNodes($2);}
     | '(' i_expr ')' {$$ = $2;}
@@ -83,3 +84,16 @@ void printTree(node *root) {
     printf("%d ", root->key);
     printTree(root->right);
 }
+
+void prettyPrintTree(node *root, int depth) {
+    if (root == NULL) {
+        return;
+    }
+    prettyPrintTree(root->right, depth + 1);
+    for (int i = 0; i < depth; i++) {
+        printf("    ");
+    }
+    printf("%d\n", root->key);
+    prettyPrintTree(root->left, depth + 1);
+}
+

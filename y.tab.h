@@ -58,7 +58,8 @@ extern int yydebug;
     NODE = 259,                    /* NODE  */
     COUNT = 260,                   /* COUNT  */
     INSERT = 261,                  /* INSERT  */
-    LF = 262                       /* LF  */
+    LF = 262,                      /* LF  */
+    PRETTY = 263                   /* PRETTY  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -72,17 +73,18 @@ extern int yydebug;
 #define COUNT 260
 #define INSERT 261
 #define LF 262
+#define PRETTY 263
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 18 "tree.y"
+#line 19 "tree.y"
 
     int ival;
     struct _node *btree;
 
-#line 86 "y.tab.h"
+#line 88 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

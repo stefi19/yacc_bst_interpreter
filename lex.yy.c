@@ -774,7 +774,7 @@ YY_RULE_SETUP
 case 8:
 YY_RULE_SETUP
 #line 16 "tree.l"
-yyerror("Unknown character");
+{ fprintf(stderr, "Error: Unknown character: %s\n", yytext); }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
