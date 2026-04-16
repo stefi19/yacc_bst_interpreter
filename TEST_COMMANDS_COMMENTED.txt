@@ -1,0 +1,113 @@
+# BST Interpreter - Complete Test Commands
+
+# Test 1: Basic single node
+Node Lf 10 Lf
+
+# Test 2: Balanced tree with 3 nodes
+Node (Node Lf 5 Lf) 10 (Node Lf 15 Lf)
+
+# Test 3: Left-heavy unbalanced tree
+Node (Node (Node Lf 2 Lf) 5 Lf) 10 Lf
+
+# Test 4: Right-heavy unbalanced tree
+Node Lf 10 (Node Lf 15 (Node Lf 20 Lf))
+
+# Test 5: COUNT single node = 1
+count (Node Lf 10 Lf)
+
+# Test 6: COUNT three nodes = 3
+count (Node (Node Lf 5 Lf) 10 (Node Lf 15 Lf))
+
+# Test 7: COUNT empty tree = 0
+count Lf
+
+# Test 8: INSERT into empty tree creates new node
+insert 10 Lf
+
+# Test 9: INSERT smaller value (goes left)
+insert 5 (Node Lf 10 Lf)
+
+# Test 10: INSERT larger value (goes right)
+insert 15 (Node Lf 10 Lf)
+
+# Test 11: INSERT multiple values chained
+insert 20 (insert 5 (Node Lf 10 Lf))
+
+# Test 12: DELETE leaf node (5 from tree)
+delete 5 (Node (Node Lf 5 Lf) 10 (Node Lf 15 Lf))
+
+# Test 13: DELETE node with only left child
+delete 10 (Node (Node Lf 5 Lf) 10 Lf)
+
+# Test 14: DELETE node with only right child
+delete 10 (Node Lf 10 (Node Lf 15 Lf))
+
+# Test 15: DELETE node with two children (replaces with inorder successor)
+delete 10 (Node (Node Lf 5 Lf) 10 (Node Lf 15 Lf))
+
+# Test 16: DELETE from empty tree
+delete 10 Lf
+
+# Test 17: DELETE non-existent value
+delete 100 (Node (Node Lf 5 Lf) 10 (Node Lf 15 Lf))
+
+# Test 18: FIND root value = True
+find 10 (Node (Node Lf 5 Lf) 10 (Node Lf 15 Lf))
+
+# Test 19: FIND left child = True
+find 5 (Node (Node Lf 5 Lf) 10 (Node Lf 15 Lf))
+
+# Test 20: FIND right child = True
+find 15 (Node (Node Lf 5 Lf) 10 (Node Lf 15 Lf))
+
+# Test 21: FIND non-existent value = False
+find 100 (Node (Node Lf 5 Lf) 10 (Node Lf 15 Lf))
+
+# Test 22: FIND in empty tree = False
+find 10 Lf
+
+# Test 23: BALANCED perfectly balanced tree = True
+balanced (Node (Node Lf 5 Lf) 10 (Node Lf 15 Lf))
+
+# Test 24: BALANCED left-heavy tree = False
+balanced (Node (Node Lf 2 Lf) 10 Lf)
+
+# Test 25: BALANCED right-heavy tree = False
+balanced (Node Lf 10 (Node Lf 15 Lf))
+
+# Test 26: BALANCED single node = True
+balanced (Node Lf 10 Lf)
+
+# Test 27: BALANCED empty tree = True
+balanced Lf
+
+# Test 28: Complex - INSERT then COUNT
+count (insert 20 (insert 5 (Node Lf 10 Lf)))
+
+# Test 29: Complex - INSERT then FIND
+find 5 (insert 5 (Node Lf 10 Lf))
+
+# Test 30: Complex - DELETE then COUNT
+count (delete 5 (Node (Node Lf 5 Lf) 10 (Node Lf 15 Lf)))
+
+# Test 31: Larger 7-node perfectly balanced tree
+Node (Node (Node Lf 1 Lf) 2 (Node Lf 3 Lf)) 4 (Node (Node Lf 5 Lf) 6 (Node Lf 7 Lf))
+
+# Test 32: COUNT larger tree = 7
+count (Node (Node (Node Lf 1 Lf) 2 (Node Lf 3 Lf)) 4 (Node (Node Lf 5 Lf) 6 (Node Lf 7 Lf)))
+
+# Test 33: BALANCED larger tree = True
+balanced (Node (Node (Node Lf 1 Lf) 2 (Node Lf 3 Lf)) 4 (Node (Node Lf 5 Lf) 6 (Node Lf 7 Lf)))
+
+# Test 34: FIND first value in larger tree = True
+find 1 (Node (Node (Node Lf 1 Lf) 2 (Node Lf 3 Lf)) 4 (Node (Node Lf 5 Lf) 6 (Node Lf 7 Lf)))
+
+# Test 35: FIND middle value in larger tree = True
+find 4 (Node (Node (Node Lf 1 Lf) 2 (Node Lf 3 Lf)) 4 (Node (Node Lf 5 Lf) 6 (Node Lf 7 Lf)))
+
+# Test 36: FIND last value in larger tree = True
+find 7 (Node (Node (Node Lf 1 Lf) 2 (Node Lf 3 Lf)) 4 (Node (Node Lf 5 Lf) 6 (Node Lf 7 Lf)))
+
+# Test 37: FIND non-existent in larger tree = False
+find 99 (Node (Node (Node Lf 1 Lf) 2 (Node Lf 3 Lf)) 4 (Node (Node Lf 5 Lf) 6 (Node Lf 7 Lf)))
+

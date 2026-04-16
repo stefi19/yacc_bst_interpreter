@@ -1,0 +1,38 @@
+Node Lf 10 Lf
+Node (Node Lf 5 Lf) 10 (Node Lf 15 Lf)
+Node (Node (Node Lf 2 Lf) 5 Lf) 10 Lf
+Node Lf 10 (Node Lf 15 (Node Lf 20 Lf))
+count (Node Lf 10 Lf)
+count (Node (Node Lf 5 Lf) 10 (Node Lf 15 Lf))
+count Lf
+insert 10 Lf
+insert 5 (Node Lf 10 Lf)
+insert 15 (Node Lf 10 Lf)
+insert 20 (insert 5 (Node Lf 10 Lf))
+delete 5 (Node (Node Lf 5 Lf) 10 (Node Lf 15 Lf))
+delete 10 (Node (Node Lf 5 Lf) 10 Lf)
+delete 10 (Node Lf 10 (Node Lf 15 Lf))
+delete 10 (Node (Node Lf 5 Lf) 10 (Node Lf 15 Lf))
+delete 10 Lf
+delete 100 (Node (Node Lf 5 Lf) 10 (Node Lf 15 Lf))
+find 10 (Node (Node Lf 5 Lf) 10 (Node Lf 15 Lf))
+find 5 (Node (Node Lf 5 Lf) 10 (Node Lf 15 Lf))
+find 15 (Node (Node Lf 5 Lf) 10 (Node Lf 15 Lf))
+find 100 (Node (Node Lf 5 Lf) 10 (Node Lf 15 Lf))
+find 10 Lf
+balanced (Node (Node Lf 5 Lf) 10 (Node Lf 15 Lf))
+balanced (Node (Node Lf 2 Lf) 10 Lf)
+balanced (Node Lf 10 (Node Lf 15 Lf))
+balanced (Node Lf 10 Lf)
+balanced Lf
+count (insert 20 (insert 5 (Node Lf 10 Lf)))
+find 5 (insert 5 (Node Lf 10 Lf))
+count (delete 5 (Node (Node Lf 5 Lf) 10 (Node Lf 15 Lf)))
+Node (Node (Node Lf 1 Lf) 2 (Node Lf 3 Lf)) 4 (Node (Node Lf 5 Lf) 6 (Node Lf 7 Lf))
+count (Node (Node (Node Lf 1 Lf) 2 (Node Lf 3 Lf)) 4 (Node (Node Lf 5 Lf) 6 (Node Lf 7 Lf)))
+balanced (Node (Node (Node Lf 1 Lf) 2 (Node Lf 3 Lf)) 4 (Node (Node Lf 5 Lf) 6 (Node Lf 7 Lf)))
+find 1 (Node (Node (Node Lf 1 Lf) 2 (Node Lf 3 Lf)) 4 (Node (Node Lf 5 Lf) 6 (Node Lf 7 Lf)))
+find 4 (Node (Node (Node Lf 1 Lf) 2 (Node Lf 3 Lf)) 4 (Node (Node Lf 5 Lf) 6 (Node Lf 7 Lf)))
+find 7 (Node (Node (Node Lf 1 Lf) 2 (Node Lf 3 Lf)) 4 (Node (Node Lf 5 Lf) 6 (Node Lf 7 Lf)))
+find 99 (Node (Node (Node Lf 1 Lf) 2 (Node Lf 3 Lf)) 4 (Node (Node Lf 5 Lf) 6 (Node Lf 7 Lf)))
+
