@@ -60,7 +60,8 @@ extern int yydebug;
     INSERT = 261,                  /* INSERT  */
     LF = 262,                      /* LF  */
     FIND = 263,                    /* FIND  */
-    DELETE = 264                   /* DELETE  */
+    DELETE = 264,                  /* DELETE  */
+    BALANCED = 265                 /* BALANCED  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -76,17 +77,18 @@ extern int yydebug;
 #define LF 262
 #define FIND 263
 #define DELETE 264
+#define BALANCED 265
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 23 "tree.y"
+#line 25 "tree.y"
 
     int ival;
     struct _node *btree;
 
-#line 90 "y.tab.h"
+#line 92 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

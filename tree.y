@@ -16,6 +16,8 @@ void printTree(node *root);
 void prettyPrintTree(node *root, int depth);
 void printBool(bool value);
 bool findKey(int key, node *root);
+node *findMin(node *root);
+bool checkBalanced(node *root);
 int yylex(void);
 void yyerror(const char *s){ fprintf(stderr,"Error: %s\n",s); }
 %}
@@ -26,7 +28,7 @@ void yyerror(const char *s){ fprintf(stderr,"Error: %s\n",s); }
 }
 
 %token <ival> NUMBER
-%token NODE COUNT INSERT LF FIND DELETE
+%token NODE COUNT INSERT LF FIND DELETE BALANCED
 
 %type <ival> i_expr
 %type <btree> t_expr tree
@@ -51,6 +53,7 @@ t_expr: INSERT i_expr t_expr {$$ = insertNode($2, $3);}
     | tree
     ;
 b_expr: FIND i_expr t_expr {$$ = findKey($2, $3);}
+    | BALANCED t_expr {$$ = checkBalanced($2);}
     | '(' b_expr ')' {$$ = $2;}
     | tree {$$ = ($1 != NULL);}
     ;
@@ -110,9 +113,9 @@ void prettyPrintTree(node *root, int depth) {
 
 void printBool(bool value) {
     if(value) {
-        printf("Found");
+        printf("True");
     } else {
-        printf("Not Found");
+        printf("False");
     }
 }
 
@@ -160,4 +163,25 @@ node *deleteNode(int key, node *root){
         root->right = deleteNode(temp->key, root->right);
     }
     return root;
+}
+
+int getHeight(node *root) {
+    if (root == NULL) {
+        return 0;
+    }
+    int leftHeight = getHeight(root->left);
+    int rightHeight = getHeight(root->right);
+    return 1 + (leftHeight > rightHeight ? leftHeight : rightHeight);
+}
+
+bool checkBalanced(node *root) {
+    if (root == NULL) {
+        return true;
+    }
+    int leftHeight = getHeight(root->left);
+    int rightHeight = getHeight(root->right);
+    if (abs(leftHeight - rightHeight) > 0) {
+        return false;
+    }
+    return checkBalanced(root->left) && checkBalanced(root->right);
 }

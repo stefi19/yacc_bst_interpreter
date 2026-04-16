@@ -13,6 +13,7 @@ count { return COUNT; }
 insert { return INSERT; }
 find { return FIND; }
 delete { return DELETE; }
+balanced { return BALANCED; }
 Lf { return LF; }
 [ \t] { /* ignore whitespace */ }
 . { fprintf(stderr, "Error: Unknown character: %s\n", yytext); }
