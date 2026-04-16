@@ -71,6 +71,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 typedef struct _node {
     int key;
     struct _node *left;
@@ -82,10 +83,12 @@ node *insertNode(int key, node *root);
 int countNodes(node *root);
 void printTree(node *root);
 void prettyPrintTree(node *root, int depth);
+void printBool(bool value);
+bool findKey(int key, node *root);
 int yylex(void);
 void yyerror(const char *s){ fprintf(stderr,"Error: %s\n",s); }
 
-#line 89 "y.tab.c"
+#line 92 "y.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -134,7 +137,7 @@ extern int yydebug;
     COUNT = 260,                   /* COUNT  */
     INSERT = 261,                  /* INSERT  */
     LF = 262,                      /* LF  */
-    PRETTY = 263                   /* PRETTY  */
+    FIND = 263                     /* FIND  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -148,18 +151,18 @@ extern int yydebug;
 #define COUNT 260
 #define INSERT 261
 #define LF 262
-#define PRETTY 263
+#define FIND 263
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 19 "tree.y"
+#line 22 "tree.y"
 
     int ival;
     struct _node *btree;
 
-#line 163 "y.tab.c"
+#line 166 "y.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -187,7 +190,7 @@ enum yysymbol_kind_t
   YYSYMBOL_COUNT = 5,                      /* COUNT  */
   YYSYMBOL_INSERT = 6,                     /* INSERT  */
   YYSYMBOL_LF = 7,                         /* LF  */
-  YYSYMBOL_PRETTY = 8,                     /* PRETTY  */
+  YYSYMBOL_FIND = 8,                       /* FIND  */
   YYSYMBOL_9_n_ = 9,                       /* '\n'  */
   YYSYMBOL_10_ = 10,                       /* '('  */
   YYSYMBOL_11_ = 11,                       /* ')'  */
@@ -196,7 +199,8 @@ enum yysymbol_kind_t
   YYSYMBOL_expr = 14,                      /* expr  */
   YYSYMBOL_i_expr = 15,                    /* i_expr  */
   YYSYMBOL_t_expr = 16,                    /* t_expr  */
-  YYSYMBOL_tree = 17                       /* tree  */
+  YYSYMBOL_b_expr = 17,                    /* b_expr  */
+  YYSYMBOL_tree = 18                       /* tree  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -524,16 +528,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  2
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   41
+#define YYLAST   48
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  12
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  6
+#define YYNNTS  7
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  15
+#define YYNRULES  19
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  31
+#define YYNSTATES  39
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   263
@@ -583,8 +587,8 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    31,    31,    32,    33,    35,    36,    38,    39,    40,
-      42,    43,    44,    46,    47,    48
+       0,    35,    35,    36,    37,    39,    40,    41,    43,    44,
+      45,    47,    48,    49,    51,    52,    53,    55,    56,    57
 };
 #endif
 
@@ -601,8 +605,8 @@ static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
 static const char *const yytname[] =
 {
   "\"end of file\"", "error", "\"invalid token\"", "NUMBER", "NODE",
-  "COUNT", "INSERT", "LF", "PRETTY", "'\\n'", "'('", "')'", "$accept",
-  "file", "expr", "i_expr", "t_expr", "tree", YY_NULLPTR
+  "COUNT", "INSERT", "LF", "FIND", "'\\n'", "'('", "')'", "$accept",
+  "file", "expr", "i_expr", "t_expr", "b_expr", "tree", YY_NULLPTR
 };
 
 static const char *
@@ -612,7 +616,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-5)
+#define YYPACT_NINF (-8)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -626,10 +630,10 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -5,    19,    -5,    -5,    31,     7,    -2,    -5,    -5,    27,
-       6,    -5,    -5,    -5,    31,     4,     7,    -5,    -2,     7,
-       5,    16,    25,    -5,    25,    31,    -5,    -5,    -5,    -5,
-      -5
+      -8,    27,    -8,    -8,     9,    14,     1,    -8,     1,    -8,
+      35,    -7,    -8,    -8,    -8,    -8,     9,     5,    14,    -8,
+      -8,     1,    14,    14,    15,    17,    33,    36,    -8,    36,
+       9,    36,    -8,    -8,    -8,    -8,    -8,    -8,    -8
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -637,22 +641,22 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       4,     0,     1,     9,     0,     0,     0,    15,     3,     0,
-       0,     5,     6,    12,     0,     0,     0,     7,     0,     0,
-       0,     0,     0,     2,     0,     0,    10,     8,    11,    14,
-      13
+       4,     0,     1,    10,     0,     0,     0,    19,     0,     3,
+       0,     0,     5,     6,     7,    13,     0,     0,     0,     8,
+      13,     0,     0,     0,     0,     0,     0,     0,     2,     0,
+       0,     0,    11,    14,     9,    12,    15,    18,    17
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -5,    -5,    -5,     3,     1,    -4
+      -8,    -8,    -8,     6,     0,    38,    -1
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     1,    10,    20,    21,    13
+       0,     1,    11,    24,    25,    14,    20
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -660,44 +664,44 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      15,     3,    12,     5,    11,    22,    17,    25,    18,    19,
-      24,     4,    22,     6,     7,    23,    27,    16,     0,     2,
-      26,    30,     3,     4,     5,     6,     7,    28,     8,     9,
-       3,     4,     5,     6,     7,     4,    29,     9,     7,     0,
-       0,    14
+      15,    13,    28,    17,     3,    19,     5,    12,    30,    27,
+       0,    21,    22,     4,    23,    29,     7,    31,     4,    16,
+       6,     7,    32,    33,    18,     0,    34,     2,    35,    38,
+       3,     4,     5,     6,     7,     8,     9,    10,     3,     4,
+       5,     6,     7,     8,    36,    10,     0,    37,    26
 };
 
 static const yytype_int8 yycheck[] =
 {
-       4,     3,     1,     5,     1,     9,     5,     3,    10,     6,
-      14,     4,    16,     6,     7,     9,    11,    10,    -1,     0,
-      19,    25,     3,     4,     5,     6,     7,    11,     9,    10,
-       3,     4,     5,     6,     7,     4,    11,    10,     7,    -1,
-      -1,    10
+       1,     1,     9,     4,     3,     5,     5,     1,     3,    10,
+      -1,    10,     6,     4,     8,    16,     7,    18,     4,    10,
+       6,     7,    22,    23,    10,    -1,    11,     0,    11,    30,
+       3,     4,     5,     6,     7,     8,     9,    10,     3,     4,
+       5,     6,     7,     8,    11,    10,    -1,    11,    10
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,    13,     0,     3,     4,     5,     6,     7,     9,    10,
-      14,    15,    16,    17,    10,    17,    10,    16,    10,    15,
-      15,    16,    17,     9,    17,     3,    16,    11,    11,    11,
-      17
+       0,    13,     0,     3,     4,     5,     6,     7,     8,     9,
+      10,    14,    15,    16,    17,    18,    10,    18,    10,    16,
+      18,    10,    15,    15,    15,    16,    17,    18,     9,    18,
+       3,    18,    16,    16,    11,    11,    11,    11,    18
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    12,    13,    13,    13,    14,    14,    15,    15,    15,
-      16,    16,    16,    17,    17,    17
+       0,    12,    13,    13,    13,    14,    14,    14,    15,    15,
+      15,    16,    16,    16,    17,    17,    17,    18,    18,    18
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     3,     2,     0,     1,     1,     2,     3,     1,
-       3,     3,     1,     4,     3,     1
+       0,     2,     3,     2,     0,     1,     1,     1,     2,     3,
+       1,     3,     3,     1,     3,     3,     1,     4,     3,     1
 };
 
 
@@ -1161,61 +1165,85 @@ yyreduce:
   switch (yyn)
     {
   case 5: /* expr: i_expr  */
-#line 35 "tree.y"
+#line 39 "tree.y"
              {printf("%d\n",(yyvsp[0].ival));}
-#line 1167 "y.tab.c"
+#line 1171 "y.tab.c"
     break;
 
   case 6: /* expr: t_expr  */
-#line 36 "tree.y"
-             {printTree((yyvsp[0].btree)); printf("\n"); prettyPrintTree((yyvsp[0].btree), 0);}
-#line 1173 "y.tab.c"
+#line 40 "tree.y"
+             {printTree((yyvsp[0].btree)); printf("\n");}
+#line 1177 "y.tab.c"
     break;
 
-  case 7: /* i_expr: COUNT t_expr  */
-#line 38 "tree.y"
-                     {(yyval.ival) = countNodes((yyvsp[0].btree));}
-#line 1179 "y.tab.c"
+  case 7: /* expr: b_expr  */
+#line 41 "tree.y"
+             {printBool((yyvsp[0].ival)); printf("\n");}
+#line 1183 "y.tab.c"
     break;
 
-  case 8: /* i_expr: '(' i_expr ')'  */
-#line 39 "tree.y"
-                     {(yyval.ival) = (yyvsp[-1].ival);}
-#line 1185 "y.tab.c"
-    break;
-
-  case 10: /* t_expr: INSERT i_expr t_expr  */
-#line 42 "tree.y"
-                             {(yyval.btree) = insertNode((yyvsp[-1].ival), (yyvsp[0].btree));}
-#line 1191 "y.tab.c"
-    break;
-
-  case 11: /* t_expr: '(' t_expr ')'  */
+  case 8: /* i_expr: COUNT t_expr  */
 #line 43 "tree.y"
-                     {(yyval.btree) = (yyvsp[-1].btree);}
-#line 1197 "y.tab.c"
+                     {(yyval.ival) = countNodes((yyvsp[0].btree));}
+#line 1189 "y.tab.c"
     break;
 
-  case 13: /* tree: NODE tree NUMBER tree  */
-#line 46 "tree.y"
-                            {(yyval.btree) = createNode((yyvsp[-1].ival), (yyvsp[-2].btree), (yyvsp[0].btree));}
-#line 1203 "y.tab.c"
+  case 9: /* i_expr: '(' i_expr ')'  */
+#line 44 "tree.y"
+                     {(yyval.ival) = (yyvsp[-1].ival);}
+#line 1195 "y.tab.c"
     break;
 
-  case 14: /* tree: '(' tree ')'  */
+  case 11: /* t_expr: INSERT i_expr t_expr  */
 #line 47 "tree.y"
-                   {(yyval.btree) = (yyvsp[-1].btree);}
-#line 1209 "y.tab.c"
+                             {(yyval.btree) = insertNode((yyvsp[-1].ival), (yyvsp[0].btree));}
+#line 1201 "y.tab.c"
     break;
 
-  case 15: /* tree: LF  */
+  case 12: /* t_expr: '(' t_expr ')'  */
 #line 48 "tree.y"
+                     {(yyval.btree) = (yyvsp[-1].btree);}
+#line 1207 "y.tab.c"
+    break;
+
+  case 14: /* b_expr: FIND i_expr t_expr  */
+#line 51 "tree.y"
+                           {(yyval.ival) = findKey((yyvsp[-1].ival), (yyvsp[0].btree));}
+#line 1213 "y.tab.c"
+    break;
+
+  case 15: /* b_expr: '(' b_expr ')'  */
+#line 52 "tree.y"
+                     {(yyval.ival) = (yyvsp[-1].ival);}
+#line 1219 "y.tab.c"
+    break;
+
+  case 16: /* b_expr: tree  */
+#line 53 "tree.y"
+           {(yyval.ival) = ((yyvsp[0].btree) != NULL);}
+#line 1225 "y.tab.c"
+    break;
+
+  case 17: /* tree: NODE tree NUMBER tree  */
+#line 55 "tree.y"
+                            {(yyval.btree) = createNode((yyvsp[-1].ival), (yyvsp[-2].btree), (yyvsp[0].btree));}
+#line 1231 "y.tab.c"
+    break;
+
+  case 18: /* tree: '(' tree ')'  */
+#line 56 "tree.y"
+                   {(yyval.btree) = (yyvsp[-1].btree);}
+#line 1237 "y.tab.c"
+    break;
+
+  case 19: /* tree: LF  */
+#line 57 "tree.y"
          {(yyval.btree) = NULL;}
-#line 1215 "y.tab.c"
+#line 1243 "y.tab.c"
     break;
 
 
-#line 1219 "y.tab.c"
+#line 1247 "y.tab.c"
 
       default: break;
     }
@@ -1408,7 +1436,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 50 "tree.y"
+#line 59 "tree.y"
 
 
 node *createNode(int key, node *left, node *right) {
@@ -1459,3 +1487,24 @@ void prettyPrintTree(node *root, int depth) {
     prettyPrintTree(root->left, depth + 1);
 }
 
+void printBool(bool value) {
+    if(value) {
+        printf("Found");
+    } else {
+        printf("Not Found");
+    }
+}
+
+bool findKey(int key, node *root) {
+    if (root == NULL) {
+        return false;
+    }
+    if (key == root->key) {
+        return true;
+    }
+    if (key < root->key) {
+        return findKey(key, root->left);
+    } else {
+        return findKey(key, root->right);
+    }
+}

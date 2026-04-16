@@ -1,6 +1,7 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 typedef struct _node {
     int key;
     struct _node *left;
@@ -12,6 +13,8 @@ node *insertNode(int key, node *root);
 int countNodes(node *root);
 void printTree(node *root);
 void prettyPrintTree(node *root, int depth);
+void printBool(bool value);
+bool findKey(int key, node *root);
 int yylex(void);
 void yyerror(const char *s){ fprintf(stderr,"Error: %s\n",s); }
 %}
@@ -22,10 +25,11 @@ void yyerror(const char *s){ fprintf(stderr,"Error: %s\n",s); }
 }
 
 %token <ival> NUMBER
-%token NODE COUNT INSERT LF PRETTY
+%token NODE COUNT INSERT LF FIND
 
 %type <ival> i_expr
 %type <btree> t_expr tree
+%type <ival> b_expr
 
 %%
 file: file expr '\n'
@@ -34,6 +38,7 @@ file: file expr '\n'
     ;
 expr: i_expr {printf("%d\n",$1);}
     | t_expr {printTree($1); printf("\n");}
+    | b_expr {printBool($1); printf("\n");}
     ;
 i_expr: COUNT t_expr {$$ = countNodes($2);}
     | '(' i_expr ')' {$$ = $2;}
@@ -42,6 +47,10 @@ i_expr: COUNT t_expr {$$ = countNodes($2);}
 t_expr: INSERT i_expr t_expr {$$ = insertNode($2, $3);}
     | '(' t_expr ')' {$$ = $2;}
     | tree
+    ;
+b_expr: FIND i_expr t_expr {$$ = findKey($2, $3);}
+    | '(' b_expr ')' {$$ = $2;}
+    | tree {$$ = ($1 != NULL);}
     ;
 tree: NODE tree NUMBER tree {$$ = createNode($3, $2, $4);}
     | '(' tree ')' {$$ = $2;}
@@ -97,3 +106,24 @@ void prettyPrintTree(node *root, int depth) {
     prettyPrintTree(root->left, depth + 1);
 }
 
+void printBool(bool value) {
+    if(value) {
+        printf("Found");
+    } else {
+        printf("Not Found");
+    }
+}
+
+bool findKey(int key, node *root) {
+    if (root == NULL) {
+        return false;
+    }
+    if (key == root->key) {
+        return true;
+    }
+    if (key < root->key) {
+        return findKey(key, root->left);
+    } else {
+        return findKey(key, root->right);
+    }
+}

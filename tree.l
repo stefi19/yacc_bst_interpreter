@@ -11,6 +11,7 @@ void yyerror(const char *s);
 Node { return NODE; }
 count { return COUNT; }
 insert { return INSERT; }
+find { return FIND; }
 Lf { return LF; }
 [ \t] { /* ignore whitespace */ }
 . { fprintf(stderr, "Error: Unknown character: %s\n", yytext); }
