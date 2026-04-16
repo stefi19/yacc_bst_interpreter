@@ -1,0 +1,85 @@
+%{
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct _node {
+    int key;
+    struct _node *left;
+    struct _node *right;
+} node;
+//prototypes of functions
+node *createNode(int key, node *left, node *right);
+node *insertNode(int key, node *root);
+int countNodes(node *root);
+void printTree(node *root);
+int yylex(void);
+void yyerror(const char *s){ fprintf(stderr,"Error: %s\n",s); }
+%}
+
+%union {
+    int ival;
+    struct _node *btree;
+}
+
+%token <ival> NUMBER
+%token NODE COUNT INSERT LF
+
+%type <ival> i_expr
+%type <btree> t_expr tree
+
+%%
+file: file expr '\n'
+    | file '\n'
+    |
+    ;
+expr: i_expr {printf("%d\n",$1);}
+    | t_expr {printTree($1);}
+    ;
+i_expr: COUNT t_expr {$$ = countNodes($2);}
+    | '(' i_expr ')' {$$ = $2;}
+    | NUMBER
+    ;
+t_expr: INSERT i_expr t_expr {$$ = insertNode($2, $3);}
+    | '(' t_expr ')' {$$ = $2;}
+    | tree
+    ;
+tree: NODE tree NUMBER tree {$$ = createNode($3, $2, $4);}
+    | '(' tree ')' {$$ = $2;}
+    | LF {$$ = NULL;}
+    ;
+%%
+
+node *createNode(int key, node *left, node *right) {
+    node *newNode = malloc(sizeof(node));
+    newNode->key = key;
+    newNode->left = left;
+    newNode->right = right;
+    return newNode;
+}
+
+node *insertNode(int key, node *root) {
+    if (root == NULL) {
+        return createNode(key, NULL, NULL);
+    }
+    if (key < root->key) {
+        root->left = insertNode(key, root->left);
+    } else if (key > root->key) {
+        root->right = insertNode(key, root->right);
+    }
+    return root;
+}
+int countNodes(node *root) {
+    if (root == NULL) {
+        return 0;
+    }
+    return 1 + countNodes(root->left) + countNodes(root->right);
+}
+void printTree(node *root) {
+    if (root == NULL) {
+        printf("LF ");
+        return;
+    }
+    printf("NODE ");
+    printTree(root->left);
+    printf("%d ", root->key);
+    printTree(root->right);
+}
