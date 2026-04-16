@@ -10,6 +10,7 @@ typedef struct _node {
 //prototypes of functions
 node *createNode(int key, node *left, node *right);
 node *insertNode(int key, node *root);
+node *deleteNode(int key, node *root);
 int countNodes(node *root);
 void printTree(node *root);
 void prettyPrintTree(node *root, int depth);
@@ -25,7 +26,7 @@ void yyerror(const char *s){ fprintf(stderr,"Error: %s\n",s); }
 }
 
 %token <ival> NUMBER
-%token NODE COUNT INSERT LF FIND
+%token NODE COUNT INSERT LF FIND DELETE
 
 %type <ival> i_expr
 %type <btree> t_expr tree
@@ -45,6 +46,7 @@ i_expr: COUNT t_expr {$$ = countNodes($2);}
     | NUMBER
     ;
 t_expr: INSERT i_expr t_expr {$$ = insertNode($2, $3);}
+    | DELETE i_expr t_expr {$$ = deleteNode($2, $3);}
     | '(' t_expr ')' {$$ = $2;}
     | tree
     ;
@@ -126,4 +128,36 @@ bool findKey(int key, node *root) {
     } else {
         return findKey(key, root->right);
     }
+}
+
+node *findMin(node *root) {
+    while (root->left != NULL) {
+        root = root->left;
+    }
+    return root;
+}
+
+node *deleteNode(int key, node *root){
+    if (root == NULL) {
+        return NULL;
+    }
+    if (key < root->key) {
+        root->left = deleteNode(key, root->left);
+    } else if (key > root->key) {
+        root->right = deleteNode(key, root->right);
+    } else {
+        if (root->left == NULL) {
+            node *temp = root->right;
+            free(root);
+            return temp;
+        } else if (root->right == NULL) {
+            node *temp = root->left;
+            free(root);
+            return temp;
+        }
+        node *temp = findMin(root->right);
+        root->key = temp->key;
+        root->right = deleteNode(temp->key, root->right);
+    }
+    return root;
 }
